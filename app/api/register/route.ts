@@ -5,7 +5,8 @@ export const runtime = "nodejs";
 type Registration = {
   name?: unknown;
   feedback?: unknown;
-  votes?: unknown;
+  locationVotes?: unknown;
+  drinkVotes?: unknown;
 };
 
 const text = (value: unknown) => typeof value === "string" ? value.trim() : "";
@@ -28,8 +29,10 @@ export async function POST(request: Request) {
 
   const name = text(data.name);
   const feedback = text(data.feedback);
-  const allowedVotes = ["Ресторан · тухтай оройн зоог", "Караоке · дуу хөгжим, бүжиг", "Амралтын газар · бүтэн өдрийн хөтөлбөр"];
-  const votes = Array.isArray(data.votes) ? data.votes.filter((v): v is string => typeof v === "string" && allowedVotes.includes(v)).slice(0, 3) : [];
+  const allowedLocations = ["Ресторан · тухтай оройн зоог", "Караоке · дуу хөгжим, бүжиг", "Амралтын газар · бүтэн өдрийн хөтөлбөр"];
+  const allowedDrinks = ["Цагаан архи", "Пиво", "Дарс", "Оргилуун дарс", "Архигүй ундаа · жүүс, хийжүүлсэн ундаа", "Уухгүй · архигүй сонголт"];
+  const locationVotes = Array.isArray(data.locationVotes) ? data.locationVotes.filter((v): v is string => typeof v === "string" && allowedLocations.includes(v)).slice(0, 3) : [];
+  const drinkVotes = Array.isArray(data.drinkVotes) ? data.drinkVotes.filter((v): v is string => typeof v === "string" && allowedDrinks.includes(v)).slice(0, 6) : [];
   if (!name || name.length > 120 || feedback.length > 2000) {
     return NextResponse.json({ error: "Мэдээллээ шалгаад дахин илгээнэ үү." }, { status: 400 });
   }
@@ -38,7 +41,7 @@ export async function POST(request: Request) {
     const response = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ secret, registration: { name, feedback, votes } }),
+      body: JSON.stringify({ secret, registration: { name, feedback, locationVotes, drinkVotes } }),
       cache: "no-store",
       signal: AbortSignal.timeout(15000),
     });
