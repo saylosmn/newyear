@@ -2,3 +2,5 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: #080d12; }
 a { color: inherit; }
+
+html,body{width:100%;min-width:320px;overflow-x:hidden}.ny-page{width:100%;max-width:100vw;overflow-x:clip}

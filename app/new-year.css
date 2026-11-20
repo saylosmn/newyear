@@ -7,3 +7,6 @@
 .ny-form-error{margin:0;color:#ffaaa5;font-size:11px;line-height:1.5}.ny-submit:disabled{opacity:.65;cursor:wait}
 
 .ny-poll-group{margin-top:28px}.ny-poll-group h3{font:500 18px 'Space Grotesk',sans-serif;color:#e8eee9;margin:0 0 12px}.ny-drink-group{margin-top:38px}
+
+@media(max-width:700px){.ny-form input,.ny-form textarea,.ny-form select{font-size:16px!important;min-height:48px}.ny-form textarea{min-height:110px}.ny-form select{padding-right:32px}}
+@media(max-width:380px){.ny-hero h1{font-size:48px;letter-spacing:-2.5px}.ny-hero-art{transform:scale(.8);margin-left:-22px;margin-right:-22px}}
