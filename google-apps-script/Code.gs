@@ -9,14 +9,12 @@ function doPost(e) {
     const registration = body.registration || {};
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["Илгээсэн огноо", "Овог, нэр", "Курс", "Утас", "Санал, хүсэлт", "Санал өгсөн сонголтууд"]);
+      sheet.appendRow(["Илгээсэн огноо", "Овог, нэр", "Санал, хүсэлт", "Санал өгсөн сонголтууд"]);
       sheet.setFrozenRows(1);
     }
     sheet.appendRow([
       new Date(),
       safeCell(registration.name, 120),
-      safeCell(registration.course, 30),
-      safeCell(registration.phone, 32),
       safeCell(registration.feedback, 2000),
       safeCell(Array.isArray(registration.votes) ? registration.votes.map(String).slice(0, 3).join("; ") : "", 200),
     ]);

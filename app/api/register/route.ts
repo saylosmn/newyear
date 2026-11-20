@@ -4,8 +4,6 @@ export const runtime = "nodejs";
 
 type Registration = {
   name?: unknown;
-  course?: unknown;
-  phone?: unknown;
   feedback?: unknown;
   votes?: unknown;
 };
@@ -29,12 +27,10 @@ export async function POST(request: Request) {
   }
 
   const name = text(data.name);
-  const course = text(data.course);
-  const phone = text(data.phone);
   const feedback = text(data.feedback);
   const allowedVotes = ["Ресторан · тухтай оройн зоог", "Караоке · дуу хөгжим, бүжиг", "Амралтын газар · бүтэн өдрийн хөтөлбөр"];
   const votes = Array.isArray(data.votes) ? data.votes.filter((v): v is string => typeof v === "string" && allowedVotes.includes(v)).slice(0, 3) : [];
-  if (!name || name.length > 120 || !phone || phone.length > 32 || !["1-р курс", "2-р курс", "3-р курс", "4-р курс"].includes(course) || feedback.length > 2000) {
+  if (!name || name.length > 120 || feedback.length > 2000) {
     return NextResponse.json({ error: "Мэдээллээ шалгаад дахин илгээнэ үү." }, { status: 400 });
   }
 
@@ -42,7 +38,7 @@ export async function POST(request: Request) {
     const response = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ secret, registration: { name, course, phone, feedback, votes } }),
+      body: JSON.stringify({ secret, registration: { name, feedback, votes } }),
       cache: "no-store",
       signal: AbortSignal.timeout(15000),
     });
