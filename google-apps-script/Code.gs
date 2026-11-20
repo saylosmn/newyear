@@ -15,12 +15,14 @@ function doPost(e) {
     } else {
       const width = Math.max(sheet.getLastColumn(), 1);
       const currentHeaders = sheet.getRange(1, 1, 1, width).getValues()[0].map(String);
+      if (!currentHeaders[0].trim()) currentHeaders[0] = "Илгээсэн огноо";
       const oldVoteColumn = currentHeaders.indexOf("Санал өгсөн сонголтууд");
       if (oldVoteColumn >= 0) currentHeaders[oldVoteColumn] = "Арга хэмжээний санал";
       headers.forEach((header) => {
         if (!currentHeaders.includes(header)) currentHeaders.push(header);
       });
       sheet.getRange(1, 1, 1, currentHeaders.length).setValues([currentHeaders]);
+      sheet.setFrozenRows(1);
     }
     const currentHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
     const row = {
